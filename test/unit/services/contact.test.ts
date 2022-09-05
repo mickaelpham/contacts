@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import contactService from "../../../services/contact";
-import { prismaMock } from "../../../singleton";
+import { databaseMock } from "../../database-mock";
 
 test("create new contact", async () => {
   const contactObject = {
@@ -9,7 +9,7 @@ test("create new contact", async () => {
     email: faker.internet.email(),
   };
 
-  prismaMock.contact.create.mockResolvedValue({ ...contactObject, id: 1 });
+  databaseMock.contact.create.mockResolvedValue({ ...contactObject, id: 1 });
 
   await expect(contactService.create(contactObject)).resolves.toMatchObject({
     ...contactObject,
@@ -24,7 +24,7 @@ test("update a contact email", async () => {
     email: faker.internet.email(),
   };
 
-  prismaMock.contact.update.mockResolvedValue({ ...contactObject, id: 1 });
+  databaseMock.contact.update.mockResolvedValue({ ...contactObject, id: 1 });
 
   await expect(contactService.update(1, contactObject)).resolves.toMatchObject({
     ...contactObject,
@@ -33,7 +33,7 @@ test("update a contact email", async () => {
 });
 
 test("delete fails if contact does not exist", async () => {
-  prismaMock.contact.delete.mockRejectedValue(
+  databaseMock.contact.delete.mockRejectedValue(
     new Error("contact does not exist")
   );
 

@@ -1,8 +1,8 @@
-import { faker } from "@faker-js/faker";
-import contactService from "../../../services/contact";
-import { databaseMock } from "../../database-mock";
+import { faker } from '@faker-js/faker';
+import contactService from '../../../services/contact';
+import databaseMock from '../../database-mock';
 
-test("create new contact", async () => {
+test('create new contact', async () => {
   const contactObject = {
     first: faker.name.firstName(),
     last: faker.name.lastName(),
@@ -17,7 +17,7 @@ test("create new contact", async () => {
   });
 });
 
-test("update a contact email", async () => {
+test('update a contact email', async () => {
   const contactObject = {
     first: faker.name.firstName(),
     last: faker.name.lastName(),
@@ -32,12 +32,8 @@ test("update a contact email", async () => {
   });
 });
 
-test("delete fails if contact does not exist", async () => {
-  databaseMock.contact.delete.mockRejectedValue(
-    new Error("contact does not exist")
-  );
+test('delete fails if contact does not exist', async () => {
+  databaseMock.contact.delete.mockRejectedValue(new Error('contact does not exist'));
 
-  await expect(contactService.remove(1)).rejects.toEqual(
-    new Error("contact does not exist")
-  );
+  await expect(contactService.remove(1)).rejects.toEqual(new Error('contact does not exist'));
 });

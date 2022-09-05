@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import contactService from '../../../services/contact';
+import contactService from '../../../app/services/contact';
 import databaseMock from '../../database-mock';
 
 test('create new contact', async () => {

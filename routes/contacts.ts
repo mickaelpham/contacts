@@ -1,3 +1,7 @@
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+} from "@prisma/client/runtime";
 import express from "express";
 import contactService from "../services/contact";
 
@@ -10,6 +14,10 @@ contactsRouter.post("/", async (req, res, next) => {
     const savedContact = await contactService.create({ first, last, email });
     res.status(201).json(savedContact);
   } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      return res.status(400).json({ error: error.code });
+    }
+
     next(error);
   }
 });
@@ -28,6 +36,7 @@ contactsRouter.get("/:id", async (req, res, next) => {
 
   try {
     const contact = await contactService.retrieve(id);
+
     if (!contact) {
       return res.status(404).json({ error: "contact not found" });
     }
@@ -48,8 +57,17 @@ contactsRouter.put("/:id", async (req, res, next) => {
       last,
       email,
     });
+
     res.json(updatedContact);
   } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      return res.status(400).json({ error: error.code });
+    } else if (error instanceof PrismaClientValidationError) {
+      return res
+        .status(400)
+        .json({ error: "invalid contact payload, fields cannot be null" });
+    }
+
     next(error);
   }
 });
@@ -61,6 +79,10 @@ contactsRouter.delete("/:id", async (req, res, next) => {
     await contactService.remove(id);
     res.sendStatus(204);
   } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      return res.sendStatus(204);
+    }
+
     next(error);
   }
 });

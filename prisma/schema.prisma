@@ -14,5 +14,5 @@ model Contact {
   id    Int    @id @default(autoincrement())
   first String
   last  String
-  email String
+  email String @unique
 }

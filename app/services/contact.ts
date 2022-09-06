@@ -1,5 +1,5 @@
 import { Contact } from '@prisma/client';
-import database from '../../database';
+import database from '../database';
 
 interface CreateContact {
   first: Contact['first'];

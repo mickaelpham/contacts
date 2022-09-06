@@ -1,6 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
-import middleware from '../middleware';
+import middleware from './middleware';
 import contactsRouter from './routes/contacts';
 
 const app = express();
